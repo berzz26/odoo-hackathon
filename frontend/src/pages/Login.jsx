@@ -29,8 +29,9 @@ const Login = () => {
         throw new Error(data.message || 'Login failed');
       }
 
-      localStorage.setItem('authToken', data.token);
+      localStorage.setItem('authToken', data.authToken);
       localStorage.setItem('user', JSON.stringify(data.user));
+      // console.log(data);
 
       alert('Login successful');
       navigate('/');

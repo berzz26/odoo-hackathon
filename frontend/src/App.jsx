@@ -5,6 +5,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import './App.css';
 import AskQuestion from './pages/AskQuestion';
+import Answers from './pages/Answers';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="signup" element={<Signup />} />
       <Route path="login" element={<Login />} />
       <Route path='askquestion' element = {<AskQuestion/>}/>
+      <Route path='answers' element={<Answers/>}/>
     </Routes>
   );
 }

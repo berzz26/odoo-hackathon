@@ -105,9 +105,7 @@ export default function TextEditor({ onSave }) {
             ejInstance.current.destroy();
             ejInstance.current = null;
             setIsEditorReady(false);
-            // Clear cache again before recovery
             clearEditorCache();
-            // Reinitialize after a short delay
             setTimeout(() => {
               const newEditor = new EditorJS({
                 holder: holderRef.current,

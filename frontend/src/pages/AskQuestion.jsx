@@ -22,7 +22,7 @@ export default function AskQuestion() {
         throw new Error("Please login to ask a question");
       }
 
-      const response = await fetch("https://stackit-backend.up.railway.app/questions", {
+      const response = await fetch("https://stackit-backend.up.railway.app/question/askQuestion", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
