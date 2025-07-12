@@ -5,6 +5,15 @@ import Navbar from '../components/Navbar';
 export default function Home() {
 const [filter, setFilter] = useState("Newest");
 const navigate = useNavigate();
+const isLoggedIn = localStorage.getItem('authToken') !== null;
+
+const handleAskQuestion = () => {
+    if (isLoggedIn) {
+      navigate("/askquestion");
+    } else {
+      alert("Please login first to perform this action");
+    }
+  };
 return (
   <div className="min-h-screen bg-gray-900">
     <div className="w-screen">
@@ -33,7 +42,9 @@ return (
       <div className="bg-gray-900 w-full min-h-[calc(100vh-72px)] px-4">
         <section className="mb-8 w-full">
           <div className="flex flex-wrap gap-4 items-center justify-between mb-6 w-full">
-            <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+            <button
+             onClick={handleAskQuestion}
+             className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
               Ask New Question
             </button>
 
