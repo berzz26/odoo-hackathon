@@ -46,3 +46,7 @@ StackIT is a lightweight and collaborative question-and-answer platform, designe
 | Prachi Gohil    | Frontend Developer | prachiigohil06@gmail.com          |
 | Harshil Patel   | Frontend Developer | patelharshil2005@gmail.com        |
 | Aum Tamboli     | Backend + Deploy   | aumtamboli5@gmail.com             |
+
+
+
+https://drive.google.com/file/d/1m-jKQEs6N0PTxl-KZ2udJPf2DSDDWeSZ/view?usp=sharing
