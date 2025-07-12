@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import List from '@editorjs/list';
@@ -7,9 +7,38 @@ import Code from '@editorjs/code';
 export default function TextEditor({ onSave, initialContent, className }) {
   const editorRef = useRef(null);
   const holderRef = useRef(null);
+  const isInitialized = useRef(false);
+
+  // Memoize the onChange handler to prevent re-initialization
+  const handleChange = useCallback(async () => {
+    if (!editorRef.current || !onSave) return;
+    
+    try {
+      const savedData = await editorRef.current.save();
+      // Convert to markdown-like format
+      const content = savedData.blocks.map(block => {
+        switch (block.type) {
+          case 'paragraph':
+            return block.data.text;
+          case 'header':
+            return `${('#').repeat(block.data.level)} ${block.data.text}`;
+          case 'list':
+            return block.data.items.map(item => `- ${item}`).join('\n');
+          case 'code':
+            return `\`\`\`\n${block.data.code}\n\`\`\``;
+          default:
+            return '';
+        }
+      }).join('\n\n').trim();
+      
+      onSave(content);
+    } catch (error) {
+      console.error('Failed to save content:', error);
+    }
+  }, [onSave]);
 
   useEffect(() => {
-    if (!holderRef.current || editorRef.current) return;
+    if (!holderRef.current || isInitialized.current) return;
 
     const editor = new EditorJS({
       holder: holderRef.current,
@@ -34,43 +63,29 @@ export default function TextEditor({ onSave, initialContent, className }) {
           data: { text: '' }
         }]
       },
-      onChange: async () => {
-        try {
-          const savedData = await editor.save();
-          // Convert to markdown-like format
-          const content = savedData.blocks.map(block => {
-            switch (block.type) {
-              case 'paragraph':
-                return block.data.text;
-              case 'header':
-                return `${('#').repeat(block.data.level)} ${block.data.text}`;
-              case 'list':
-                return block.data.items.map(item => `- ${item}`).join('\n');
-              case 'code':
-                return `\`\`\`\n${block.data.code}\n\`\`\``;
-              default:
-                return '';
-            }
-          }).join('\n\n').trim();
-          
-          onSave(content);
-        } catch (error) {
-          console.error('Failed to save content:', error);
-        }
-      },
+      onChange: handleChange,
       autofocus: true,
       minHeight: 200
     });
 
     editorRef.current = editor;
+    isInitialized.current = true;
 
     return () => {
       if (editorRef.current && editorRef.current.destroy) {
         editorRef.current.destroy();
         editorRef.current = null;
+        isInitialized.current = false;
       }
     };
-  }, [onSave, initialContent]);
+  }, []); // Remove onSave and initialContent from dependencies
+
+  // Handle initial content separately
+  useEffect(() => {
+    if (editorRef.current && initialContent && !isInitialized.current) {
+      editorRef.current.render(initialContent);
+    }
+  }, [initialContent]);
 
   return (
     <div className={`editor-js-container ${className || ''}`}>
