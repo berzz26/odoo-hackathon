@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // <-- ADD THIS
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
@@ -10,7 +10,12 @@ const Navbar = () => {
     <div className="w-screen">
       <nav className="bg-gray-800 w-full px-4 py-4 mb-4">
         <div className="flex justify-between items-center w-full px-4">
-          <h1 className="text-xl font-bold text-blue-400">StackIt</h1>
+          <h1 
+            onClick={() => navigate("/")}
+            className="text-xl font-bold text-blue-400 cursor-pointer hover:text-blue-300 transition"
+          >
+            StackIt
+          </h1>
           <div className="flex gap-2 items-center">
             <button 
               onClick={() => navigate("/login")}
