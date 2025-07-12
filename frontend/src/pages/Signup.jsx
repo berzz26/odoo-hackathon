@@ -1,5 +1,7 @@
 import React ,{useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import Footer from '../components/Footer';
+
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -37,53 +39,118 @@ const Signup = () => {
         setLoading(false);
     }
     };
-    return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm space-y-4"
-      >
-        <h2 className="text-2xl font-bold text-center text-indigo-600">Sign Up</h2>
+   return (
+  <div className="min-h-screen w-screen flex flex-col bg-gray-900 text-white">
+    
+    {/* Header */}
+    <header className="bg-gray-800 border-b border-gray-700 py-4 px-6">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <h1 className="text-blue-400 font-bold text-2xl">StackIt</h1>
+        <nav>
+          <button 
+            onClick={() => navigate('/login')}
+            className="text-gray-300 hover:text-white px-3 py-1 rounded-md hover:bg-gray-700"
+          >
+            Log in
+          </button>
+        </nav>
+      </div>
+    </header>
 
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          required
-        />
+    {/* Main Content */}
+    <main className="flex-grow flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-700">
+          <h2 className="text-2xl font-bold text-white mb-6">Create your account</h2>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          required
-        />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Name */}
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
+                Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          required
-        />
+            {/* Email */}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
 
-        {error && <p className="text-red-600 text-sm">{error}</p>}
+            {/* Password */}
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Create a password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition"
-        >
-          {loading ? 'Registering...' : 'Sign Up'}
-        </button>
-      </form>
-    </div>
-  );
-};
+            {/* Error Message */}
+            {error && (
+              <div className="p-3 bg-red-900/30 border border-red-700 text-red-300 rounded-md text-sm">
+                {error}
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 mt-4"
+            >
+              {loading ? 'Registering...' : 'Sign Up'}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center text-sm text-gray-400">
+            By registering, you agree to our terms of service and privacy policy.
+          </div>
+        </div>
+
+        <div className="mt-4 text-center text-gray-400">
+          Already have an account?{' '}
+          <button
+            onClick={() => navigate('/login')}
+            className="text-blue-400 hover:text-blue-300 focus:outline-none"
+          >
+            Log in
+          </button>
+        </div>
+      </div>
+    </main>
+
+    {/* Footer */}
+    <Footer />
+
+  </div>
+);
+}
 
 export default Signup;
