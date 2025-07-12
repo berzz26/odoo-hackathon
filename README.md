@@ -40,3 +40,7 @@ Vite + React
 React router
 
 text editor - editorJs
+
+# links:
+frontend: https://stackit-frontend.vercel.app/
+backend: https://stackit-backend.up.railway.app/
