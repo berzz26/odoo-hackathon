@@ -148,7 +148,7 @@ export default function QuestionDetail() {
                                         </div>
                                         <div className="flex justify-between items-center">
                                             <div className="text-sm text-gray-400">
-                                                Answered by {answer.author?.name || 'Anonymous'} on{' '}
+                                                Answered by {answer.user?.username || 'Anonymous'} on{' '}
                                                 {new Date(answer.createdAt).toLocaleDateString()}
                                             </div>
                                         </div>

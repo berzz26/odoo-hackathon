@@ -127,7 +127,7 @@ export default function Home() {
                     </p>
                     <div className="flex items-center justify-between">
                       <p className="text-xs text-gray-400">
-                        Asked by {question.author?.name || 'Anonymous'} • {
+                        Asked by {question.author?.username || question.user?.username || 'Anonymous'} • {
                           new Date(question.createdAt).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
