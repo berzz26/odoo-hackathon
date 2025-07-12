@@ -1,11 +1,10 @@
-import TextEditor from '../components/TextEditor'; // or TiptapEditor if that's the actual file
+import React from 'react';
+import TextEditor from '../components/TextEditor';
 
-const Test = () => {
-  return (
-    <div className='flex flex-col justify-center items-center w-full'>
-      <TextEditor />
-    </div>
-  );
-};
+export default function Test() {
+  const handleEditorSave = (data) => {
+    console.log('Received data in parent:', data);
+  };
 
-export default Test;
+  return <TextEditor onSave={handleEditorSave} />;
+}
