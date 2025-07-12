@@ -1,24 +1,32 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Navbar from '../components/Navbar';
 
 export default function Home() {
 const [filter, setFilter] = useState("Newest");
+const navigate = useNavigate();
 return (
   <div className="min-h-screen bg-gray-900">
     <div className="w-screen">
-<nav className="bg-gray-800 w-full px-4 py-4 mb-4">
+{/* <nav className="bg-gray-800 w-full px-4 py-4 mb-4">
   <div className="flex justify-between items-center w-full px-4">
     <h1 className="text-xl font-bold text-white">StackIt</h1>
 
     <div className="flex gap-2">
-      <button className="border border-white px-4 py-1 rounded-full hover:bg-gray-700 transition">
+      <button 
+      onClick={() => navigate("/login")}
+      className="border border-white px-4 py-1 rounded-full hover:bg-gray-700 transition">
         Login
       </button>
-      <button className="border border-white px-4 py-1 rounded-full hover:bg-gray-700 transition">
+      <button
+      onClick={() => navigate("/signup")}
+      className="border border-white px-4 py-1 rounded-full hover:bg-gray-700 transition">
         SignUp
       </button>
     </div>
   </div>
-</nav>
+</nav> */}
+        <Navbar />
 
 
 
