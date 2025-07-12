@@ -5,6 +5,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
+    <div className="w-screen">
     <nav className="bg-gray-800 w-full px-4 py-4 mb-4">
       <div className="flex justify-between items-center w-full px-4">
         <h1 className="text-xl font-bold text-white">StackIt</h1>
@@ -24,6 +25,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+    </div>
   );
 };
 
