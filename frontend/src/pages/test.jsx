@@ -10,10 +10,7 @@ export default function Test() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Editor Test Page</h1>
         <TextEditor onSave={handleEditorSave} />
-      </div>
     </div>
   );
 }
