@@ -63,7 +63,7 @@ export const login = async (req, res) => {
     if (!validate.success) {
         return res.status(400).json({
             msg: "Validation failed",
-            errors: validate.error.errors
+            errors: validate.error
         })
     }
 
