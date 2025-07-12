@@ -32,12 +32,15 @@ JWT- auth
 Socket.io (might change) for realtime notis
 Zod
 
-deployment: on railway metal server. 
+deployment: on railway metal server and vercel 
 pagination : will look into later once basic features are ready
 
 Frontend :
 Vite + React 
 React router
 
-text editor - tiptap but need to research more based on ease to implement + feature rich
-Tailwind
+text editor - editorJs
+
+# links:
+frontend: https://stackit-frontend.vercel.app/
+backend: https://stackit-backend.up.railway.app/
