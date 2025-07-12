@@ -2,8 +2,7 @@ import TextEditor from '../components/TextEditor'; // or TiptapEditor if that's 
 
 const Test = () => {
   return (
-    <div>
-      <h1>Text Editor Testing</h1>
+    <div className='flex flex-col justify-center items-center w-full'>
       <TextEditor />
     </div>
   );
