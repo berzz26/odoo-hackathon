@@ -31,3 +31,5 @@ Thumbs.db
 
 # Debug
 debug.log
+
+/src/generated/prisma
