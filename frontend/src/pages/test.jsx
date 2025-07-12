@@ -1,12 +1,16 @@
-import TextEditor from '../components/TextEditor'; // or TiptapEditor if that's the actual file
+import React, { useState } from 'react';
+import TextEditor from '../components/TextEditor';
 
-const Test = () => {
+export default function Test() {
+  const [savedData, setSavedData] = useState(null);
+
+  const handleEditorSave = (data) => {
+    setSavedData(data);
+  };
+
   return (
-    <div>
-      <h1>Text Editor Testing</h1>
-      <TextEditor />
+    <div className="min-h-screen bg-gray-100">
+        <TextEditor onSave={handleEditorSave} />
     </div>
   );
-};
-
-export default Test;
+}
