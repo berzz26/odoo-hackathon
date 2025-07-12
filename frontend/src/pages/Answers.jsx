@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-const TagBadge = ({ tag }) => (
+const TagBadge = ({tag}) => (
   <span className="bg-blue-600 text-white px-3 py-1 text-sm rounded-full">
-    #{tag}
+    #{ tag}
   </span>
 );
 const AnswerCard = ({ text }) => (
@@ -22,9 +22,8 @@ export default function Answers() {
       try {
         const res = await fetch(`https://stackit-backend.up.railway.app/getQuestion/${id}`);
         const data = await res.json();
-        console.log("Fetched question:", data); // For debugging
+        console.log("Fetched question:", data);
 
-        // Ensure answers is always an array
         data.answers = Array.isArray(data.answers) ? data.answers : [];
 
         setQuestion(data);
