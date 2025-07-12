@@ -4,7 +4,7 @@ export const checkRole = (roles = []) => {
             return res.status(401).json({ msg: "Unauthorized: No user found" });
         }
 
-        console.log(req.user.role);
+        // console.log(req.user.role);
         
         if (!roles.includes(req.user.role)) {
             return res.status(403).json({ msg: "Forbidden: Access denied" });

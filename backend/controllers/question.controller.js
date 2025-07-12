@@ -176,7 +176,7 @@ const getQuestionsByUser = async (req, res) => {
 const getQuestionsByTag = async (req, res) => {
     try {
         const { tag } = req.params;
-
+        
         const questions = await prisma.question.findMany({
             where: {
                 tags: {
