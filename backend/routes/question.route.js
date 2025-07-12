@@ -5,7 +5,7 @@ import { checkRole } from '../middleware/checkRole.js'
 
 const router = express.Router()
 
-router.post('/askQuestion', auth, checkRole(['user', 'admin']), askQuestion)
+router.post('/askQuestion', auth, checkRole(['USER', 'ADMIN']), askQuestion)
 
 
 export default router;
