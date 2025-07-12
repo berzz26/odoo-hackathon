@@ -1,218 +1,163 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import EditorJS from '@editorjs/editorjs';
-import Paragraph from '@editorjs/paragraph';
 import Header from '@editorjs/header';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import List from '@editorjs/list';
+import Code from '@editorjs/code';
 
-export default function TextEditor({ onSave }) {
-  const ejInstance = useRef(null);
-  const holderRef = useRef(null); // Use a ref for the holder
-  const [isEditorReady, setIsEditorReady] = useState(false);
-  const sanitizeEditorData = (data) => {
-    if (!data || !data.blocks) {
-      return {
-        blocks: [
-          {
-            type: 'paragraph',
-            data: {
-              text: ''
-            }
-          }
-        ]
-      };
-    }
-
-    const validBlocks = data.blocks.filter(block => {
-      if (!block || !block.type || !block.data) {
-        return false;
-      }
-      if (block.type === 'paragraph' || block.type === 'header') {
-        if (!block.data.text || typeof block.data.text !== 'string') {
-          block.data.text = '';
-        }        block.data.text = block.data.text.replace(/[\u0000-\u001F\u007F-\u009F]/g, '');
-      }
-
-      return true;
-    });
-
-    if (validBlocks.length === 0) {
-      validBlocks.push({
-        type: 'paragraph',
-        data: {
-          text: ''
-        }
-      });
-    }
-
-    return {
-      blocks: validBlocks
-    };
-  };
-
-  // Function to clear any potential cached data
-  const clearEditorCache = () => {
-    try {
-      // Clear any localStorage data that might be cached
-      const keys = Object.keys(localStorage);
-      keys.forEach(key => {
-        if (key.includes('editorjs') || key.includes('editor')) {
-          localStorage.removeItem(key);
-        }
-      });
-    } catch (error) {
-      console.log('No localStorage to clear or error clearing cache:', error);
-    }
-  };
+export default function TextEditor({ onSave, initialContent, className }) {
+  const editorRef = useRef(null);
+  const holderRef = useRef(null);
 
   useEffect(() => {
-    if (ejInstance.current) return;
-    if (!holderRef.current) return; // Wait for the holder ref
-
-    // Clear any cached data before initializing
-    clearEditorCache();
+    if (!holderRef.current || editorRef.current) return;
 
     const editor = new EditorJS({
       holder: holderRef.current,
       tools: {
-        header: Header,
-        paragraph: Paragraph,
+        header: {
+          class: Header,
+          config: {
+            levels: [2, 3],
+            defaultLevel: 2
+          }
+        },
+        list: {
+          class: List,
+          inlineToolbar: true
+        },
+        code: Code
       },
-      placeholder: 'Start typing here...',
-      data: {
-        blocks: [
-          {
-            type: 'paragraph',
-            data: {
-              text: ''
+      placeholder: 'Write your question in detail... You can use headers, lists and code blocks',
+      data: initialContent || {
+        blocks: [{
+          type: 'paragraph',
+          data: { text: '' }
+        }]
+      },
+      onChange: async () => {
+        try {
+          const savedData = await editor.save();
+          // Convert to markdown-like format
+          const content = savedData.blocks.map(block => {
+            switch (block.type) {
+              case 'paragraph':
+                return block.data.text;
+              case 'header':
+                return `${('#').repeat(block.data.level)} ${block.data.text}`;
+              case 'list':
+                return block.data.items.map(item => `- ${item}`).join('\n');
+              case 'code':
+                return `\`\`\`\n${block.data.code}\n\`\`\``;
+              default:
+                return '';
             }
-          }
-        ]
-      },
-      onReady: () => {
-        console.log('Editor.js is ready!');
-        ejInstance.current = editor;
-        setIsEditorReady(true);
-      },
-      onChange: (api, event) => {
-        console.log('Editor content changed:', event);
-      },
-      onError: (error) => {
-        console.error('Editor error:', error);
-        if (error.message && error.message.includes('invalid')) {
-          console.log('Attempting to recover from data corruption...');
-          if (ejInstance.current) {
-            ejInstance.current.destroy();
-            ejInstance.current = null;
-            setIsEditorReady(false);
-            clearEditorCache();
-            setTimeout(() => {
-              const newEditor = new EditorJS({
-                holder: holderRef.current,
-                tools: {
-                  header: Header,
-                  paragraph: Paragraph,
-                },
-                placeholder: 'Start typing here...',
-                data: {
-                  blocks: [
-                    {
-                      type: 'paragraph',
-                      data: {
-                        text: ''
-                      }
-                    }
-                  ]
-                },
-                onReady: () => {
-                  console.log('Editor.js recovered and ready!');
-                  ejInstance.current = newEditor;
-                  setIsEditorReady(true);
-                },
-                onError: (recoveryError) => {
-                  console.error('Recovery failed:', recoveryError);
-                }
-              });
-            }, 100);
-          }
+          }).join('\n\n').trim();
+          
+          onSave(content);
+        } catch (error) {
+          console.error('Failed to save content:', error);
         }
-      }
+      },
+      autofocus: true,
+      minHeight: 200
     });
 
+    editorRef.current = editor;
+
     return () => {
-      if (ejInstance.current?.destroy) {
-        ejInstance.current.destroy();
-        ejInstance.current = null;
-        setIsEditorReady(false);
+      if (editorRef.current && editorRef.current.destroy) {
+        editorRef.current.destroy();
+        editorRef.current = null;
       }
     };
-  }, [holderRef.current]); // Depend on holderRef
-
-  const handleSave = async () => {
-    if (!ejInstance.current || !isEditorReady) {
-      console.warn('Editor not ready');
-      return;
-    }
-    
-    try {
-      const outputData = await ejInstance.current.save();
-      console.log('Raw saved data:', outputData);
-      
-      // Handle the case where EditorJS returns empty blocks
-      if (!outputData.blocks || outputData.blocks.length === 0) {
-        console.log('Editor returned empty blocks, creating default structure');
-        const defaultData = {
-          blocks: [
-            {
-              type: 'paragraph',
-              data: {
-                text: ''
-              }
-            }
-          ]
-        };
-        onSave?.(defaultData);
-        return;
-      }
-      
-      // Sanitize the saved data before passing to parent
-      const sanitizedData = sanitizeEditorData(outputData);
-      console.log('Main data:', sanitizedData);
-      
-      // Validate the sanitized data before passing it to parent
-      if (sanitizedData && sanitizedData.blocks && sanitizedData.blocks.length > 0) {
-        onSave?.(sanitizedData);
-      } else {
-        console.warn('No valid data to save');
-      }
-    } catch (err) {
-      console.error('Saving failed:', err);
-    }
-  };
+  }, [onSave, initialContent]);
 
   return (
-    <div className="min-h-screen w-screen flex items-center justify-center bg-gray-900 text-white p-6">
-      <div className="w-full max-w-4xl bg-white text-black rounded-md shadow-lg p-6">
-        <div
-          ref={holderRef}
-          className="w-full h-[300px] scrollbar-hide overflow-y-auto rounded px-4 py-2"
-        ></div>
+    <div className={`editor-js-container ${className || ''}`}>
+      <style jsx="true">{`
+        .editor-js-container {
+          background: rgba(17, 24, 39, 0.7);
+          border-radius: 0.75rem;
+          transition: all 200ms;
+        }
+        
+        .editor-js-container .codex-editor {
+          color: #e2e8f0;
+        }
 
-        <div className="flex justify-end mt-4">
-          <button
-            onClick={handleSave}
-            disabled={!isEditorReady}
-            className={`flex items-center justify-center w-10 h-10 rounded-full transition ${
-              isEditorReady 
-                ? 'bg-black text-white hover:bg-green-700' 
-                : 'bg-gray-400 text-gray-600 cursor-not-allowed'
-            }`}
-            title={isEditorReady ? "Send" : "Editor not ready"}
-          >
-            <FontAwesomeIcon icon={faPaperPlane} />
-          </button>
-        </div>
-      </div>
+        .editor-js-container .ce-block__content,
+        .editor-js-container .ce-toolbar__content {
+          max-width: 100%;
+          margin: 0;
+          padding: 0 1rem;
+        }
+
+        .editor-js-container .ce-paragraph {
+          line-height: 1.6;
+          font-size: 1rem;
+        }
+
+        .editor-js-container .ce-toolbar__actions {
+          right: 1rem;
+        }
+
+        .editor-js-container .ce-toolbar__plus,
+        .editor-js-container .ce-toolbar__settings-btn,
+        .editor-js-container .cdx-button,
+        .editor-js-container .ce-popover,
+        .editor-js-container .ce-popover-item,
+        .editor-js-container .ce-conversion-tool {
+          color: #e2e8f0;
+          background: rgba(31, 41, 55, 0.95);
+          border: 1px solid rgba(75, 85, 99, 0.5);
+          border-radius: 0.5rem;
+        }
+
+        .editor-js-container .ce-toolbar__plus:hover,
+        .editor-js-container .ce-toolbar__settings-btn:hover,
+        .editor-js-container .cdx-button:hover,
+        .editor-js-container .ce-popover-item:hover,
+        .editor-js-container .ce-conversion-tool:hover {
+          background: rgba(55, 65, 81, 0.95);
+          border-color: rgba(99, 102, 241, 0.6);
+        }
+
+        .editor-js-container .codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty::before {
+          color: #6b7280;
+        }
+
+        .editor-js-container .ce-toolbar__plus svg, 
+        .editor-js-container .ce-toolbar__settings-btn svg {
+          fill: currentColor;
+        }
+
+        .editor-js-container .cdx-block {
+          padding: 0.5rem 0;
+        }
+
+        .editor-js-container .ce-toolbar {
+          background: transparent;
+        }
+
+        .editor-js-container .codex-editor__redactor {
+          padding-bottom: 80px !important;
+        }
+
+        .editor-js-container .ce-code__textarea {
+          background: rgba(17, 24, 39, 0.7);
+          border: 1px solid rgba(75, 85, 99, 0.5);
+          border-radius: 0.5rem;
+          color: #e2e8f0;
+          font-family: 'Fira Code', monospace;
+        }
+
+        .editor-js-container .ce-header {
+          padding: 0.5rem 0;
+          margin: 0;
+          font-weight: 600;
+        }
+      `}</style>
+      <div ref={holderRef} className="prose prose-invert max-w-none" />
     </div>
   );
 }

@@ -48,7 +48,8 @@ export default function AskQuestion() {
         throw new Error(data.message || "Question submission failed");
       }
 
-      navigate(`/questions/${data.id}`);
+      // Redirect to home page after successful submission
+      navigate('/');
     } catch (err) {
       // Handle HTML error responses
       if (err.message.startsWith("<!DOCTYPE html>")) {
