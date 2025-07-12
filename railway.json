@@ -1,0 +1,4 @@
+{
+    "rootDirectory": "backend",
+    "startCommand": "node server.js"
+}
