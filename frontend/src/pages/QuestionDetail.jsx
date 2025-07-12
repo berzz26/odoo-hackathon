@@ -12,8 +12,17 @@ export default function QuestionDetail() {
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Debug logging
+    console.log('Question ID from params:', id);
+    console.log('All params:', useParams());
+
     useEffect(() => {
-        fetchQuestionDetails();
+        if (id) {
+            fetchQuestionDetails();
+        } else {
+            setError('Question ID is missing from URL');
+            setLoading(false);
+        }
     }, [id]);
 
     const fetchQuestionDetails = async () => {
@@ -25,18 +34,24 @@ export default function QuestionDetail() {
                 throw new Error("Please login to view questions");
             }
 
+            console.log('Fetching question with ID:', id);
             const response = await fetch(`https://stackit-backend.up.railway.app/question/getQuestions/${id}`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             });
+            
+            console.log('Response status:', response.status);
+            
             if (!response.ok) {
                 throw new Error('Failed to fetch question details');
             }
             const data = await response.json();
+            console.log('Question data:', data);
             setQuestion(data);
             setAnswers(data.answers || []);
         } catch (err) {
+            console.error('Error fetching question:', err);
             setError(err.message);
         } finally {
             setLoading(false);
@@ -80,6 +95,20 @@ export default function QuestionDetail() {
             setIsSubmitting(false);
         }
     };
+
+    // Show error if no ID is found
+    if (!id) {
+        return (
+            <div className="min-h-screen bg-gray-900 text-white">
+                <Navbar />
+                <div className="container mx-auto px-4 py-8">
+                    <div className="bg-red-500/10 border border-red-500/50 text-red-300 p-4 rounded-xl">
+                        Error: Question ID is missing from the URL. Please check your route configuration.
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     if (loading) {
         return (
@@ -140,7 +169,7 @@ export default function QuestionDetail() {
                             <div className="space-y-6">
                                 {answers.map((answer, index) => (
                                     <div
-                                        key={index}
+                                        key={answer.id || index}
                                         className="bg-gray-800/30 rounded-xl p-6 border border-gray-700/50"
                                     >
                                         <div className="prose prose-invert max-w-none mb-4">
