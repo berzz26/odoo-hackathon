@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 import authRoutes from "./routes/auth.route.js";
 // import answerRoutes from "./routes/answer.route.js"
 // import notificationRoutes from "./routes/notification.route.js"
-// import questionRoutes from "./routes/question.route.js"
+import questionRoutes from "./routes/question.route.js"
 // import voteRoutes from "./routes/vote.route.js"
 
 dotenv.config();
@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/auth', authRoutes)
+app.use('/question', questionRoutes);
 
 app.get('/', (req, res) => {
     res.send('StackIt backend server running')
