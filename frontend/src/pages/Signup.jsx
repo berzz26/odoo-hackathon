@@ -5,14 +5,14 @@ import Footer from '../components/Footer';
 
 const Signup = () => {
     const navigate = useNavigate();
-    const [name,setName] = useState('');
+    const [username,setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const[loading,setLoading] = useState(false);
     const [error, setError] = useState('');
 
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const backendUrl = "https://stackit-backend.up.railway.app";
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -25,7 +25,7 @@ const Signup = () => {
             headers: {
            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }), 
+        body: JSON.stringify({ username, email, password }), 
     });
     const data = await response.json();
     if(!response.ok){
@@ -66,15 +66,15 @@ const Signup = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Name */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
-                Name
+              <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-1">
+                UserName
               </label>
               <input
-                id="name"
+                id="username"
                 type="text"
                 placeholder="Enter your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
