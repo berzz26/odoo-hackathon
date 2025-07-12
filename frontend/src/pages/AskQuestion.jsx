@@ -36,8 +36,6 @@ export default function AskQuestion() {
                    .filter(tag => tag.length > 0)
         })
       });
-
-      // First check if response is JSON
       const contentType = response.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
         const text = await response.text();
@@ -76,7 +74,6 @@ return (
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Title Field */}
         <div className="space-y-2">
           <label htmlFor="title" className="block text-sm font-medium">
             Title*
@@ -92,8 +89,6 @@ return (
             required
           />
         </div>
-
-        {/* Description Field */}
         <div className="space-y-2">
           <label htmlFor="description" className="block text-sm font-medium">
             Description*
@@ -124,8 +119,6 @@ return (
             required
           />
         </div>
-
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={isSubmitting}
