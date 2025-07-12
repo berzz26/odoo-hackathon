@@ -1,46 +1,48 @@
-# Problem Statement:
-StackIT - A Minimal Q&A Platform
+# StackIT – A Minimal Q&A Platform
 
-# Description:
-StackIt is a minimal question-and-answer platform that supports collaborative learning and structured knowledge sharing.
+StackIT is a lightweight and collaborative question-and-answer platform, designed to promote structured knowledge sharing and peer learning. Inspired by platforms like Stack Overflow, StackIT brings essential features in a minimal yet functional package.
 
-# Features:
-Ask and Answer Questions
-Voting and Accepting Answers
-Tag Questions
-User Authentication
-Notification System
+---
 
-# Team Members:
-Prachi Gohil  - prachiigohil06@gmail.com
-Aum Tamboli   - aumtamboli5@gmail.com
-Harshil Patel - patelharshil2005@gmail.com
-Janvi Panchal - janvipanchal212@gmail.com
+## Features
 
-# Roles:
-Janvi Panchal - Design
-Prachi Gohil  - Frontend
-Harshil Patel - Frontend
-Aum Tamboli   - Backend + Deployment
+- Ask & Answer Questions  
+- Tag Questions  
+- Vote & Accept Answers  
+- User Authentication (JWT)  
+- Real-time Notification System (via Socket.io or alternatives)  
+- Rich Text Support with Editor.js  
 
-# TECH-STACK used:
-Backend Stack :
-Node + Express
-PostgreSQL - DB
-Prisma - ORM
-JWT- auth
-Socket.io (might change) for realtime notis
-Zod
+> Pagination and additional enhancements are planned post MVP.
 
-deployment: on railway metal server and vercel 
-pagination : will look into later once basic features are ready
+---
 
-Frontend :
-Vite + React 
-React router
+## Tech Stack
 
-text editor - editorJs
+### Backend
+- Node.js + Express – RESTful API development  
+- PostgreSQL – Relational database  
+- Prisma – ORM for DB access  
+- JWT – Authentication  
+- Zod – Request validation  
+- Socket.io (subject to change) – Real-time notifications  
 
-# links:
-frontend: https://stackit-frontend.vercel.app/
-backend: https://stackit-backend.up.railway.app/
+### Frontend
+- Vite + React – Fast, modern SPA  
+- React Router – Client-side routing  
+- Editor.js – Rich text editor for questions and answers  
+
+### Deployment
+- Backend: [Railway (metal server)](https://stackit-backend.up.railway.app/)  
+- Frontend: [Vercel](https://stackit-frontend.vercel.app/)
+
+---
+
+## Team Members
+
+| Name            | Role               | Email                             |
+|-----------------|--------------------|-----------------------------------|
+| Janvi Panchal   | Design             | janvipanchal212@gmail.com         |
+| Prachi Gohil    | Frontend Developer | prachiigohil06@gmail.com          |
+| Harshil Patel   | Frontend Developer | patelharshil2005@gmail.com        |
+| Aum Tamboli     | Backend + Deploy   | aumtamboli5@gmail.com             |
