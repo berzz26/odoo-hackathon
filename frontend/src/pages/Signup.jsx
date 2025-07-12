@@ -31,6 +31,7 @@ const Signup = () => {
     if(!response.ok){
         throw new Error(data.message || 'signup failed');
     }
+
     alert('signup succesfull');
     navigate('/login');
     }catch(error){
