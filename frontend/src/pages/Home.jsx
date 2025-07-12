@@ -105,7 +105,7 @@ export default function Home() {
                 {questions.map((question) => (
                   <div
                     key={question.id}
-                    onClick={() => navigate(`/questions/${question.id}`)}
+                    onClick={() => navigate(`/question/${question.id}`)}
                     className="border border-gray-700 rounded-xl p-6 relative w-full
                              hover:border-green-500/50 hover:bg-gray-800/50 transition duration-200 cursor-pointer
                              transform hover:scale-[1.01] hover:shadow-lg"

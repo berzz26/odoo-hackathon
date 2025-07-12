@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import './App.css';
 import AskQuestion from './pages/AskQuestion';
 import Answers from './pages/Answers';
+import QuestionDetail from './pages/QuestionDetail';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="login" element={<Login />} />
       <Route path='askquestion' element = {<AskQuestion/>}/>
       <Route path='answers' element={<Answers/>}/>
+      <Route path='question/:id' element={<QuestionDetail/>}/>
     </Routes>
   );
 }
