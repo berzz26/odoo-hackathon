@@ -34,17 +34,22 @@ export const signup = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Always create new users with USER role, admin role can only be set via database
         const user = await prisma.user.create({
             data: {
                 email,
                 username,
                 password: hashedPassword,
-                role: 'USER'
+                role: 'USER' 
             }
         })
 
-
-        res.status(201).json({ msg: 'User added successfully' })
+        res.status(201).json({ 
+            msg: 'User added successfully',
+            username: user.username,
+            email: user.email,
+            role: user.role
+        })
 
     } catch (error) {
         console.error('Signup error:', error);
@@ -71,7 +76,14 @@ export const login = async (req, res) => {
 
     try {
         const user = await prisma.user.findUnique({
-            where: { email }
+            where: { email },
+            select: {
+                id: true,
+                email: true,
+                username: true,
+                password: true,
+                role: true
+            }
         })
 
         if (!user) {
@@ -88,18 +100,24 @@ export const login = async (req, res) => {
             })
         }
 
+        // Create JWT token with user's actual role from database
         const token = jwt.sign({
             username: user.username,
             userId: user.id,
             userEmail: user.email,
-            role: user.role
+            role: user.role // This will be ADMIN if set in database, otherwise USER
         }, JWT_SECRET, {
             expiresIn: '7d'
         })
 
         res.json({
             msg: "Login successful",
-            authToken: token
+            authToken: token,
+            user: {
+                username: user.username,
+                email: user.email,
+                role: user.role
+            }
         })
 
     } catch (error) {
