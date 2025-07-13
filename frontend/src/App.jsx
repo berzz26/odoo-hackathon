@@ -7,6 +7,7 @@ import './App.css';
 import AskQuestion from './pages/AskQuestion';
 import Answers from './pages/Answers';
 import QuestionDetail from './pages/QuestionDetail';
+import Notifications from './pages/Notifications';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path='askquestion' element = {<AskQuestion/>}/>
       <Route path='answers' element={<Answers/>}/>
       <Route path='question/:id' element={<QuestionDetail/>}/>
+      <Route path='notifications' element={<Notifications/>}/>
     </Routes>
   );
 }
