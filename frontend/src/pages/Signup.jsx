@@ -46,7 +46,11 @@ const Signup = () => {
     {/* Header */}
     <header className="bg-gray-800 border-b border-gray-700 py-4 px-6">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <h1 className="text-blue-400 font-bold text-2xl">StackIt</h1>
+        <h1 
+        
+          onClick={() => navigate('/')}
+          className="text-blue-400 font-bold text-2xl cursor-pointer hover:text-blue-300 transition">StackIt</h1>
+        
         <nav>
           <button 
             onClick={() => navigate('/login')}
