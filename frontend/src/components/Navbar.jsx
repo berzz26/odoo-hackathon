@@ -1,10 +1,23 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    setIsLoggedIn(!!token);
+  },[]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
+    setIsLoggedIn(false);
+  }
 
   return (
     <div className="w-screen">
@@ -17,28 +30,42 @@ const Navbar = () => {
             StackIt
           </h1>
           <div className="flex gap-2 items-center">
-            <button 
-              onClick={() => navigate("/login")}
-              className="border border-white px-4 py-1 rounded-full hover:bg-gray-700 transition"
-            >
-              Login
-            </button>
-            <button
-              onClick={() => navigate("/signup")}
-              className="border border-white px-4 py-1 rounded-full hover:bg-gray-700 transition"
-            >
-              SignUp
-            </button>
-            <button
-              onClick={() => navigate("/notifications")}
-              className="border border-white px-4 py-1 rounded-full hover:bg-gray-700 transition"
-            >
-              <FontAwesomeIcon icon={faBell} className="text-white text-xl cursor-pointer" />
-            </button>
-          </div>
-        </div>
-      </nav>
-    </div>
+        {isLoggedIn ? (
+      <>
+      <button
+      onClick={handleLogout}
+      className="border border-white px-4 py-1 rounded-full hover:bg-gray-700 transition"
+     >
+      Logout
+      </button>
+      <button
+      onClick={() => navigate("/notifications")}
+      className="border border-white px-4 py-1 rounded-full hover:bg-gray-700 transition"
+     >
+      <FontAwesomeIcon icon={faBell} className="text-white text-xl cursor-pointer" />
+      </button>
+      </>
+    ) : (
+  <>
+    <button
+      onClick={() => navigate("/login")}
+      className="border border-white px-4 py-1 rounded-full hover:bg-gray-700 transition"
+    >
+      Login
+    </button>
+    <button
+      onClick={() => navigate("/signup")}
+      className="border border-white px-4 py-1 rounded-full hover:bg-gray-700 transition"
+    >
+      SignUp
+    </button>
+  </>
+)}
+
+  </div>
+  </div>
+  </nav>
+  </div>
   );
 };
 
