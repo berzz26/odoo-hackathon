@@ -13,7 +13,7 @@ const Signup = () => {
   const [success, setSuccess] = useState(false);
 
 
-  const backendUrl = "http://localhost:3000";
+  const backendUrl = "https://stackit-backend.up.railway.app";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
