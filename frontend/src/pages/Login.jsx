@@ -8,6 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const backendUrl = "https://stackit-backend.up.railway.app";
 
@@ -20,22 +21,28 @@ const Login = () => {
       const response = await fetch(`${backendUrl}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }), 
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(data.msg || 'Login failed');
       }
 
       localStorage.setItem('authToken', data.authToken);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      alert('Login successful');
-      navigate('/');
+      setSuccess(true);
+
+      setTimeout(() => {
+        navigate('/');
+      }, 2000)
     } catch (error) {
+
+
       setError(error.message);
+
     } finally {
       setLoading(false);
     }
@@ -46,9 +53,9 @@ const Login = () => {
       {/* Header */}
       <header className="bg-gray-800 border-b border-gray-700 py-4 px-6">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 
-          onClick={() => navigate('/')}
-          className="text-blue-400 font-bold text-2xl cursor-pointer hover:text-blue-300 transition">StackIt</h1>
+          <h1
+            onClick={() => navigate('/')}
+            className="text-blue-400 font-bold text-2xl cursor-pointer hover:text-blue-300 transition">StackIt</h1>
         </div>
       </header>
 
@@ -56,6 +63,12 @@ const Login = () => {
       <main className="flex-grow flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <div className="bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-700">
+            {success && (
+              <div className="p-4 bg-green-900/30 border border-green-700 text-green-300 rounded-md text-sm mb-2">
+                Login successful
+              </div>
+            )}
+
             <h2 className="text-2xl font-bold text-white mb-6">Login to your account</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
