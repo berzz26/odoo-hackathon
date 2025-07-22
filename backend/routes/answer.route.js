@@ -8,8 +8,6 @@ const router = express.Router();
 // Create answer (requires auth and USER/ADMIN role)
 router.post('/create', auth, checkRole(['USER', 'ADMIN']), createAnswer);
 
-
-
 // Delete answer (requires auth and must be owner or admin)
 router.delete('/:id', auth, deleteAnswer);
 

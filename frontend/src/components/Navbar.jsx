@@ -16,6 +16,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('user');
+    localStorage.removeItem('avatarSeed');
     setIsLoggedIn(false);
   }
 
@@ -67,6 +68,7 @@ const Navbar = () => {
   </nav>
   </div>
   );
+
 };
 
 export default Navbar;
